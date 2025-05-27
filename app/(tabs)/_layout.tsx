@@ -1,45 +1,106 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { View, Image, Text, StyleSheet } from 'react-native';
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+export default function RootLayout() {
   return (
+    <>
+    <View style = {styles.header}>
+      <Image source={require('@/assets/images/stockly_logo.png')} style={styles.logo}/>
+      <Text style = {styles.headerTitle}>Stockly</Text>  
+    </View>  
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
+        tabBarStyle: {
+          backgroundColor: '#11111f',
+          marginBottom:0,
+          borderTopWidth: 0,
+          height: 70, 
+          shadowColor: '#000', 
+          shadowOffset: { width: 0, height: -4 },
+          shadowOpacity: 0.3,
+          shadowRadius: 6,
+          elevation: 12, 
+        },
+        tabBarActiveTintColor: '#FF6F61', 
+        tabBarInactiveTintColor: '#B0B0B0', 
+        tabBarLabelStyle: {
+          marginBottom:-30,
+          fontSize: 16, 
+          fontWeight: 'bold', 
+          textShadowColor: 'rgba(255, 111, 97, 0.5)', 
+          textShadowOffset: { width: 0, height: 0 }, 
+          textShadowRadius: 12, 
+        },
+        tabBarIconStyle: {
+          marginBottom: 10, 
+          textShadowColor: 'rgba(255, 111, 97, 0.5)', 
+          textShadowOffset: { width: 0, height: 0 },
+          textShadowRadius: 12,
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          headerShown: false,
+          title: 'HOME',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name = "stockScreen"
+        options = {{
+          headerShown: false,
+          title:'STOCKS',
+          tabBarIcon : ({color,size}) => (
+            <Ionicons name= "cube-outline" size ={size} color = {color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="qrScreen"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          headerShown: false,
+          title: 'QR',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="qr-code" size={size} color={color} />
+          ),
         }}
       />
     </Tabs>
+  </>
   );
 }
+
+
+const styles = StyleSheet.create({
+  header: {
+    height: 100,
+    backgroundColor: '#fff',
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent:'center',
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    
+  },
+  logo: {
+    width: 70,
+    height: 70,
+    marginBottom:20,
+    marginRight:10,
+    resizeMode: 'contain',
+  },
+  headerTitle: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    color: '#000000',
+  },
+});

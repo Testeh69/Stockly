@@ -4,6 +4,9 @@ import React, { useState, useEffect } from "react";
 import ElementForm from "@/components/ElementForm";
 import { databaseMap, databaseName, tableName } from "@/utils/sqlConst";
 import { affectDataSQL, createTable, insertData, selectDataSQL } from "@/utils/sqlOps";
+import { getCurrentDate } from "@/utils/Ops";
+import CarouselHistorique from "@/components/CarouselHistorique";
+import { getTimeStamp } from "@/utils/miscellanous";
 
 
 export default function QrScreen() {
@@ -11,12 +14,7 @@ export default function QrScreen() {
     const [quantiteStock, setQuantiteStock] = useState<number | null>(null);
     const [getData, setGetData] = useState<any>(null);
 
-    const addToParsingData = (newKey: string, newValue: number | string) => {
-        setParsingData((prevData) => ({
-            ...(prevData || {}),
-            [newKey]: newValue,
-        }));
-    };
+
 
     const savedData = async () => {
         try {
@@ -26,7 +24,6 @@ export default function QrScreen() {
                 tableName,
                 dataFormat: databaseMap
             });
-            console.log(answer);
             if (parsingData !== null){
                 const requestSQL = `SELECT COALESCE(Quantite, 0) AS Quantite
                 FROM historique 
@@ -36,21 +33,21 @@ export default function QrScreen() {
                 const answer = await selectDataSQL (requestSQL);
                 if (Array.isArray(answer) && quantiteStock){
                     if (answer.length === 0){
-                        const dataToInsert = {...parsingData, Quantite : quantiteStock}
+                        const dataToInsert = {...parsingData, Quantite : quantiteStock, timestamp: getTimeStamp()}
                         const answerSqlDb = insertData({databaseName,tableName, dataToInsert:dataToInsert});
-                        console.log(answerSqlDb);
-
+                        console.log(answerSqlDb)
                     }else{
                         const cumulQuantite = +(answer[0] as { Quantite: number }).Quantite + quantiteStock;                        
                         const requestSQL = 
                         `UPDATE historique 
-                        SET Quantite = '${cumulQuantite}' 
+                        SET Quantite = '${cumulQuantite}',
+                        timestamp = '${getTimeStamp()}' 
                         WHERE LOT = '${parsingData.Lot}' 
                         AND Designation = '${parsingData.Designation}' 
                         AND Reference = '${parsingData.Reference}' ;`
 
                         const answerSQL = await affectDataSQL(requestSQL);
-                        console.log(answerSQL);
+                        console.log(answerSQL)
                     }
 
                 } 
@@ -75,7 +72,9 @@ export default function QrScreen() {
     return (
         <View style={styles.container}>
             <Camera dataFromQrCode={setParsingData} />
-
+            <View>
+                <CarouselHistorique/>
+            </View>
             <ElementForm data={parsingData} modifierQuantites={setQuantiteStock} quantites={quantiteStock} />
             <View style={styles.btnMenu}>
                 <Pressable style={[styles.button, styles.deleteButton]} onPress={deleteData}>

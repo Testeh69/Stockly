@@ -2,6 +2,7 @@ import { affectDataSQL, selectDataSQL } from '@/utils/sqlOps';
 import { Text,TextInput, View, Modal, Pressable, StyleSheet } from 'react-native';
 import React,{ useState, useEffect } from 'react';
 import { PopUpProps } from '@/utils/type';
+import { isString } from '@/utils/miscellanous';
 
 
 
@@ -25,10 +26,13 @@ const PopUp = ({ setIsModalVisible, isModalVisible, id }: PopUpProps) => {
             try{
                 const requestSQL = `SELECT Designation, Quantite FROM historique WHERE id = ${id}`
                 const quantiteAndDesignationSQL = await selectDataSQL(requestSQL);
-                const quantiteAndDesignation = quantiteAndDesignationSQL[0];
-                setQuantiteInitial(quantiteAndDesignation.Quantite);
-                setDesignation(quantiteAndDesignation.Designation);
-        
+                if (Array.isArray(quantiteAndDesignationSQL)){
+                    const quantiteAndDesignation = quantiteAndDesignationSQL[0];
+                    const data = quantiteAndDesignation as { Quantite: number; Designation: string };
+                    setQuantiteInitial(data.Quantite);
+                    setDesignation(data.Designation);
+                }
+               
             }
             catch(error){
                 console.error("Eroor fetching data", error)
@@ -44,17 +48,18 @@ const PopUp = ({ setIsModalVisible, isModalVisible, id }: PopUpProps) => {
 
     
         try {
-            const quantiteUpdated = parseInt(newQuantite);
-            if (isNaN(quantiteUpdated)){
-                alert("Veuillez entrer une valeur valide")
+            if (isString(newQuantite)){
+                const quantiteUpdated = parseInt(newQuantite);
+                if (isNaN(quantiteUpdated)){
+                    alert("Veuillez entrer une valeur valide")
+                }
+                const updateSQL = `UPDATE historique SET Quantite = ${quantiteUpdated} WHERE id = ${id}`;
+                await affectDataSQL(updateSQL); 
+                alert("Quantité mise à jour !");
+                setQuantiteInitial(quantiteUpdated); 
+                setIsModalVisible(false);
+                setNewQuantite('');
             }
-    
-            const updateSQL = `UPDATE historique SET Quantite = ${quantiteUpdated} WHERE id = ${id}`;
-            await affectDataSQL(updateSQL); 
-            alert("Quantité mise à jour !");
-            setQuantiteInitial(quantiteUpdated); 
-            setIsModalVisible(false);
-            setNewQuantite('');
         }
 
         catch(error){
@@ -75,7 +80,7 @@ const PopUp = ({ setIsModalVisible, isModalVisible, id }: PopUpProps) => {
         >
             <View style={styles.overlay}>
                 <View style={styles.modalView}>
-                    <Text>Modifier la Quantité(s) de {designation} --"{quantiteInitial}"?</Text>
+                    <Text>Modifier la Quantité(s) de {designation} — “{quantiteInitial}” ?</Text>
                     <TextInput
                         placeholder='Entrez la quantité'
                         keyboardType='numeric'

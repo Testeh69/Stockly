@@ -1,10 +1,12 @@
 import {  View, StyleSheet, Image } from "react-native";
 
 import SendEmail from "@/components/SendEmail";
+import CarouselHistorique from "@/components/CarouselHistorique";
 
 export default function Index() {
   return (
     <View style={ styles.container}>
+      <CarouselHistorique/>
       <SendEmail/>
     </View>
   );

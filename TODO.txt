@@ -1,0 +1,22 @@
+✅ Terminé
+Rien à signaler pour le moment
+
+🔄 En test
+Affichage de l’historique des 3 derniers stocks scannés sur l’écran QR
+
+🛠️ En cours
+(rien de précis pour le moment)
+
+📌 À faire
+Redesign de l’UI
+-> Donner une identité visuelle plus moderne et agréable
+
+Ajout d’une barre de recherche
+-> Permettre de filtrer les stocks directement dans l’interface
+
+Insertion du logo de l’application
+-> Lancer la charte graphique dans le haut de l’écran
+
+Installation sur le téléphone pour test
+-> Déployer l’app sur un appareil réel pour validation
+

@@ -120,6 +120,13 @@ export const deleteTable = async (nameTable:string) => {
   }
 };
 
+
+export const addTimestampColumn = async () => {
+  const alterSQL = `ALTER TABLE historique ADD COLUMN timestamp DATETIME DEFAULT CURRENT_TIMESTAMP;`;
+  await affectDataSQL(alterSQL);
+  console.log("Colonne timestamp ajoutée");
+}
+
 //Testing Insertion
 const verifyInsertion = async () => {
   const db = await SQLite.openDatabaseAsync(databaseName);

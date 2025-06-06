@@ -1,7 +1,7 @@
 import HistoryElement from "@/components/HistoryElement";
 import { View,Pressable, Text, FlatList, StyleSheet, TouchableHighlight} from "react-native";
 import { useEffect, useState } from "react";
-import { affectDataSQL, selectDataSQL} from "@/utils/sqlOps";
+import {  affectDataSQL, selectDataSQL} from "@/utils/sqlOps";
 import PopUp from "@/components/PopUp";
 
 
@@ -43,21 +43,21 @@ const StockScreen = () => {
 
 
     const deleteData = async () => {
-        if (itemStack?.length === 0) {
-            const requestSQL = "DELETE FROM historique"            
+        if (!itemStack || itemStack.length === 0) {
+            const requestSQL = "DELETE FROM historique";
             await affectDataSQL(requestSQL);
             console.log("Suppression de la table");
-        }
-        else{
+        } else {
             for (const item of mapElement) {
-                if (itemStack?.includes(item.id) === true){
+                if (itemStack.includes(item.id)) {
                     const requestSQL = `DELETE FROM historique WHERE Lot = '${item.Lot}' AND Reference = '${item.Reference}' AND Designation = '${item.Designation}';`;
                     await affectDataSQL(requestSQL);
                 }
-                setItemStack([]);
             }
+            setItemStack([]);
         }
-    }
+    };
+
 
 
     const handleModal = () => {

@@ -2,6 +2,16 @@ import * as SQLite from 'expo-sqlite';
 import { databaseName, tableName } from './sqlConst';
 //Object => Hashmap
 
+export async function checkDatabaseExists(databaseName: string) {
+  try {
+    const db = await SQLite.openDatabaseAsync(databaseName);
+    console.log('La base de données existe.');
+    return true;
+  } catch (error) {
+    console.error('Erreur lors de l\'ouverture de la base de données :', error);
+    return false;
+  }
+}
 
 
 export const createTable = async ({databaseName, tableName, dataFormat}:{databaseName:string, tableName:string, dataFormat: Record<string,string>}) => {

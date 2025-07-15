@@ -1,37 +1,28 @@
-"""
-generate_qr.py
-Génère un QR code avec Designation, Reference et Lot
-"""
-
 import qrcode
 import json
 
-def generate_qr(designation: str, reference: str, lot: str, output_path: str = "qrcode.png"):
-    # Structure des données à encoder dans le QR code
-    data = {
-        "Designation": designation,
-        "Reference": reference,
-        "Lot": lot
-    }
-    payload = json.dumps(data)  # On encode en JSON
 
-    # Création de l'objet QR code
-    qr = qrcode.QRCode(
-        version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_M,
-        box_size=10,
-        border=4
-    )
-    qr.add_data(payload)
-    qr.make(fit=True)
+# Données à encoder
+data = "Lot:12345 ,Designation:Produit X , Reference:ABC123"
 
-    # Création d'une image PIL
-    img = qr.make_image(fill_color="black", back_color="white")
 
-    # Sauvegarde de l'image
-    img.save(output_path)
-    print(f"QR code généré : {output_path}")
+json_data = json.dumps(data)
 
-if __name__ == "__main__":
-    # Exemple d'utilisation
-    generate_qr("Pièce A", "REF123", "LOT456", "qrcode_pieceA.png")
+
+# Créer un objet QR Code
+qr = qrcode.QRCode(
+    version=1,  # Contrôle la taille du QR code (1 = plus petit, 40 = plus grand)
+    error_correction=qrcode.constants.ERROR_CORRECT_L,  # Niveau de correction d'erreur
+    box_size=10,  # Taille de chaque boîte du QR code
+    border=4,  # Largeur des bordures (minimum = 4)
+)
+
+# Ajouter les données
+qr.add_data(json_data)
+qr.make(fit=True)
+
+# Générer l'image du QR code
+img = qr.make_image(fill_color="black", back_color="white")
+
+# Sauvegarder l'image
+img.save("qrcode_test/json_qr_code_2.png")

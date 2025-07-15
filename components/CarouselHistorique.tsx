@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, ScrollView } from 'react-native';
-import { selectDataSQL } from '@/utils/sqlOps';
+import { selectDataSQL } from "@/utilitaire/sqlOps";
+import React, { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 type HistoriqueItem = {
   id: number;
@@ -23,10 +23,10 @@ export default function CarouselHistorique() {
           if (Array.isArray(result)) {
             setCarouselData(result as HistoriqueItem[]);
           } else {
-            console.error('selectDataSQL returned unexpected value', result);
+            console.error("selectDataSQL returned unexpected value", result);
           }
         } catch (e) {
-          console.error('Erreur fetching carouselData', e);
+          console.error("Erreur fetching carouselData", e);
         }
       };
       fetchData();
@@ -67,8 +67,8 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   noData: {
-    textAlign: 'center',
-    color: '#999',
+    textAlign: "center",
+    color: "#999",
     fontSize: 16,
   },
   scrollView: {
@@ -78,12 +78,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 10,
     padding: 20,
     marginHorizontal: 10,
     width: 250,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 5,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   quantity: {
     fontSize: 16,
@@ -100,6 +100,6 @@ const styles = StyleSheet.create({
   timestamp: {
     fontSize: 12,
     marginTop: 12,
-    color: '#666',
+    color: "#666",
   },
 });

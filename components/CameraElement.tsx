@@ -1,15 +1,31 @@
-import { View,StyleSheet } from "react-native";
-import { CameraView } from "expo-camera";
+import { View,Text,StyleSheet } from "react-native";
+import { CameraView, Camera } from "expo-camera";
+import { useEffect,useState } from "react";
+import { useIsFocused } from "@react-navigation/native";
 
 
 
 
 
 
+export default function CameraQR  ({dataFromQrCode}:{dataFromQrCode: (data:Record<string,string>|null) => void}) {
 
-export default function Camera  ({dataFromQrCode}:{dataFromQrCode: (data:Record<string,string>|null) => void}) {
+    const isFocused = useIsFocused();
+    const [permission, requestPermission] = useState<boolean | null>(null);
+    const [cameraKey, setCameraKey] = useState<number>(0);
 
+    useEffect(()=>{
+        (async () => {
+            const {status} = await Camera.requestCameraPermissionsAsync();
+            requestPermission(status === "granted");
+        })()
+    },[]);
 
+    useEffect(()=> {
+        if (isFocused){
+            setCameraKey(prev => prev + 1);
+        }
+    }, [isFocused])
 
     const parsingDataFromQrCode = ({data}:{data:string}):Record<string,string> => {
         const resultDataFromParsing: string[] = data.split(",");
@@ -20,6 +36,7 @@ export default function Camera  ({dataFromQrCode}:{dataFromQrCode: (data:Record<
             const value : string = resultDataFromParsing[i].split(":")[1].trim().replace("\"","");;
             parsingData[keyWords] = value; 
         }
+        console.log(parsingData)
         return parsingData;
     }
     
@@ -37,13 +54,19 @@ export default function Camera  ({dataFromQrCode}:{dataFromQrCode: (data:Record<
 
     return (
         <View style = {styles.container}>
+            {permission ? (
             <CameraView
+            key = {cameraKey}
             style = {styles.cameraView}
             facing = {'back'}
             barcodeScannerSettings={{ barcodeTypes:["qr"]}}
             onBarcodeScanned={getDataFromQrCode}
             >
-            </CameraView>     
+            </CameraView>  ) : (
+                <View style={styles.cameraView}>
+                    <Text>Permission to access camera was denied</Text>
+                </View>
+            )}   
         </View>
     )
 

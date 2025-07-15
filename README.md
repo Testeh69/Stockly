@@ -22,10 +22,11 @@ Stockly is a React Native app designed to simplify inventory management by using
 ## 🛠 Tech Stack
 
 - **React Native**  
-- **React Native Camera / Expo Camera**  
-- **XLSX or ExcelJS** for file creation  
-- **Expo Mail Composer / React Native Email** for sending email  
-- **AsyncStorage** (or another local storage system for stock data)
+- **Expo Camera**  for acceding the camera
+- **XLSX** for excel file creation  
+- **Expo-File-System** for acceding in the file
+- **Expo-Sharing** for sending email  
+- **Expo-SQLITE** for local storage
 
 ## 🚀 Getting Started
 
@@ -38,7 +39,16 @@ Stockly is a React Native app designed to simplify inventory management by using
 ### Installation
 
 ```bash
-git clone https://github.com/your-username/stockly.git
+git clone https://github.com/testeh69/stockly.git
 cd stockly
 npm install
-expo start
+npx expo start
+
+
+#build directement l'app 
+npx eas build
+
+or 
+
+npm run build ## gènère l'apk pour android si vous avez un compte expo
+```

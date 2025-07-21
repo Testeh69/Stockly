@@ -12,15 +12,16 @@ export default function RootLayout() {
     <Tabs
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: '#11111f',
+          backgroundColor: '#f2f2f2ff',
           marginBottom:0,
-          borderTopWidth: 0,
+          borderTopWidth: 0.8,
           height: 70, 
           shadowColor: '#000', 
           shadowOffset: { width: 0, height: -4 },
           shadowOpacity: 0.3,
           shadowRadius: 6,
           elevation: 12, 
+
         },
         tabBarActiveTintColor: '#FF6F61', 
         tabBarInactiveTintColor: '#B0B0B0', 
@@ -64,7 +65,7 @@ export default function RootLayout() {
         name="qrScreen"
         options={{
           headerShown: false,
-          title: 'QR',
+          title: 'SAISIE',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="qr-code" size={size} color={color} />
           ),

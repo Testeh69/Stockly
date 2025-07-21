@@ -46,7 +46,6 @@ export default function QrScreen() {
               tableName,
               dataToInsert: dataToInsert,
             });
-            console.log(answerSqlDb);
           } else {
             const cumulQuantite =
               +(answer[0] as { Quantite: number }).Quantite + quantiteStock;
@@ -57,8 +56,7 @@ export default function QrScreen() {
                         AND Designation = '${parsingData.Designation}' 
                         AND Reference = '${parsingData.Reference}' ;`;
 
-            const answerSQL = await affectDataSQL(requestSQL);
-            console.log(answerSQL);
+            await affectDataSQL(requestSQL);
           }
         }
       }
@@ -68,7 +66,6 @@ export default function QrScreen() {
     setParsingData(null);
     setQuantiteStock(null);
   };
-  // Function to delete the data from the state
   const deleteData = () => {
     setParsingData(null);
     setQuantiteStock(null);
@@ -76,7 +73,7 @@ export default function QrScreen() {
 
   return (
     <View style={styles.container}>
-      <CameraQR dataFromQrCode={setParsingData} />
+              <CameraQR dataFromQrCode={setParsingData} />
       <View>
         <CarouselHistorique />
       </View>

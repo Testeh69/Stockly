@@ -28,29 +28,58 @@ export default function CameraQR  ({dataFromQrCode}:{dataFromQrCode: (data:Recor
     }, [isFocused])
 
     // Function to parse the data from the QR code
-    const parsingDataFromQrCode = ({data}:{data:string}):Record<string,string> => {
-        const resultDataFromParsing: string[] = data.split(",");
-        const lengthDataFromParsing: number = resultDataFromParsing.length;
-        let parsingData: Record<string,string>= {};
-        for (let i = 0; i<lengthDataFromParsing; i++){
-            const keyWords: string = resultDataFromParsing[i].split(":")[0].trim().replace("\"","");
-            const value : string = resultDataFromParsing[i].split(":")[1].trim().replace("\"","");;
-            parsingData[keyWords] = value; 
+    const parsingDataFromQrCode = ({ data }: { data: string }): Record<string, string> | null => {
+    try {
+        if (!data || typeof data !== "string") {
+        throw new Error("QR data is empty or invalid");
         }
-        console.log("parsing - data", parsingData)
-        return parsingData;
-    }
-    // Function to handle the data from the QR code
-    const getDataFromQrCode = ({type,data}: {type:string, data:string}) => {
-        if (typeof data === 'string'){
-            dataFromQrCode(parsingDataFromQrCode({data}));
+
+        // On tente d'abord une lecture JSON (plus propre)
+        const maybeJson = data.trim();
+        if (maybeJson.startsWith("{") && maybeJson.endsWith("}")) {
+        const parsed = JSON.parse(maybeJson);
+        if (typeof parsed === "object" && parsed !== null) {
+            // On s'assure que toutes les valeurs sont des strings
+            const safeParsed: Record<string, string> = {};
+            for (const key in parsed) {
+            if (typeof parsed[key] !== "string") continue;
+            safeParsed[key] = parsed[key];
+            }
+            return safeParsed;
         }
-        else{
-            console.error("error data type must be string");
         }
-  
+
+    // Sinon fallback : format "key1:val1,key2:val2"
+    const result: Record<string, string> = {};
+    const pairs = data.split(",");
+    for (const item of pairs) {
+      const [rawKey, ...rawValue] = item.split(":");
+      if (!rawKey || rawValue.length === 0) continue;
+      const key = rawKey.trim().replace(/"/g, "");
+      const value = rawValue.join(":").trim().replace(/"/g, "");
+      if (key && value) result[key] = value;
     }
 
+    if (Object.keys(result).length === 0) throw new Error("Parsing failed: no valid key:value pairs found");
+
+        return result;
+    } catch (error) {
+        console.error("QR parsing error:", error);
+        return null;
+        }
+    };
+
+    
+    // Function to handle the data from the QR code
+    const getDataFromQrCode = ({ type, data }: { type: string; data: string }) => {
+        const parsed = parsingDataFromQrCode({ data });
+        if (parsed) {
+            dataFromQrCode(parsed);
+        } else {
+            // renvoyer null pour dire que le parsing a échoué
+            dataFromQrCode(null);
+        }
+        };
 
 
     return (
@@ -76,13 +105,13 @@ export default function CameraQR  ({dataFromQrCode}:{dataFromQrCode: (data:Recor
 
 const styles = StyleSheet.create({
     container: {
-        width:'100%',
-        height:300,
+        width:330,
+        height:220,
         alignItems: 'center',
     },
     cameraView: {
         flex: 1, 
-        width: '90%', 
+        width: 330,
         maxWidth: 400, 
         aspectRatio: 1, 
         borderRadius: 10, 

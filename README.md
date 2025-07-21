@@ -1,3 +1,5 @@
+![stockly-logo](/assets/images/stockly.png)
+
 # 📦 Stockly
 
 Stockly is a React Native app designed to simplify inventory management by using QR code scanning. Users can quickly register product quantities and export the stock list as an Excel file, which can be sent via email in one tap.
@@ -51,4 +53,37 @@ npx eas build
 or 
 
 npm run build ## gènère l'apk pour android si vous avez un compte expo
+
+
+or # si vous avez make
+
+
+make dev #pour lancer l'env sur expo
+
+make build #pour build l'app
+
+
 ```
+## 📌 Plan de Développement
+Le développement de Stockly est organisé via le fichier TODO.md, qui agit comme un Kanban minimaliste.
+
+Il est structuré en 4 colonnes :
+
+  ### 🧠 À faire (To Do)
+
+  ### 🛠 En cours (In Progress)
+
+  ### 🧪 En test (Testing)
+
+  ### ✅ Terminé (Done)
+
+
+## 🤝 Contribuer
+
+- Créez une **issue** si vous avez une idée ou un bug.
+- Forkez le projet.
+- Créez une branche avec le nom de votre feature : `feature/nouvelle-fonctionnalité`
+- Faites une Pull Request avec une description claire.
+
+
+📫 Contact : **norefice45@gmail.com**

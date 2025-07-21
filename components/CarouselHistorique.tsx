@@ -53,9 +53,19 @@ export default function CarouselHistorique() {
         >
           {carouselData.map((item) => (
             <View key={item.timestamp} style={styles.card}>
-              <Text style={styles.title}>{item.Designation}</Text>
-              <Text style={styles.quantity}>Quantité: {item.Quantite}</Text>
-              <Text style={styles.timestamp}>{item.timestamp}</Text>
+              <View style={styles.cardHeader}>
+                <Text style={styles.title}>{item.Designation}</Text>
+                <Text style={styles.ref}>Reference : {item.Reference}</Text>
+                <Text style={styles.ref}>Lot : {item.Lot}</Text>
+              </View>
+              
+              <View style={styles.cardBody}>
+                <Text style={styles.quantity}>Quantité(s) : <Text style={styles.quantityValue}>{item.Quantite}</Text></Text>
+              </View>
+
+              <View style={styles.cardFooter}>
+                <Text style={styles.timestamp}>📅 {item.timestamp}</Text>
+              </View>
             </View>
           ))}
         </ScrollView>
@@ -65,8 +75,9 @@ export default function CarouselHistorique() {
 }
 
 const styles = StyleSheet.create({
+
   container: {
-    marginVertical: 10,
+    marginVertical: 2,
     paddingHorizontal: 10,
   },
   noData: {
@@ -81,29 +92,50 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   card: {
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    padding: 20,
-    marginVertical: 10,
-    marginHorizontal: 10,
-    width: 250,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 12,
+    width: 200,
+    height: 150,
+    padding: 16,
+    marginHorizontal: 12,
+    marginVertical: 8,
     shadowColor: "#000",
     shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
     elevation: 4,
   },
+   cardHeader: {
+    marginBottom: 4,
+  },
   title: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "bold",
+    color: "#333",
+  },
+  ref: {
+    fontSize: 10,
+    color: "#666",
+  },
+  cardBody: {
+    marginVertical: 4,
   },
   quantity: {
-    fontSize: 16,
+    fontSize: 12,
+    color: "#444",
+  },
+  quantityValue: {
+    fontWeight: "600",
+    color: "#222",
+  },
+  cardFooter: {
     marginTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: "#eee",
+    paddingTop: 2,
   },
   timestamp: {
     fontSize: 12,
-    marginTop: 12,
-    color: "#666",
+    color: "#999",
   },
 });

@@ -6,7 +6,7 @@ import json
 
 
 # Données à encoder
-data = "Lot:12345 ,Designation:Produit X , Reference:ABC123"
+data = "Lot:24 , Designation:Z , Reference:XYZ"
 
 
 json_data = json.dumps(data)
@@ -28,4 +28,4 @@ qr.make(fit=True)
 img = qr.make_image(fill_color="black", back_color="white")
 
 # Sauvegarder l'image
-img.save("qrcode_test/json_qr_code_2.png")
+img.save("qrcode_test/qr_4.png")

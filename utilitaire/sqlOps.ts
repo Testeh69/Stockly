@@ -11,7 +11,6 @@ import { databaseName, tableName } from './sqlConst';
 export async function checkDatabaseExists(databaseName: string) {
   try {
     await SQLite.openDatabaseAsync(databaseName);
-    console.log('La base de données existe.');
     return true;
   } catch (error) {
     console.error('Erreur lors de l\'ouverture de la base de données :', error);
@@ -86,7 +85,6 @@ export const affectDataSQL = async (requestSQL:string)=>{
   try {
     const db = await SQLite.openDatabaseAsync(databaseName, {useNewConnection:true});
     const result = await db.runAsync(requestSQL);
-    console.log(verifyInsertion());
     return result;
   } catch (error: any) {
     console.error('Error message:', error.message);
@@ -133,7 +131,6 @@ export const deleteTable = async (nameTable:string) => {
   try {
       const requestSQL = `DROP TABLE IF EXISTS '${nameTable}';`;
       await affectDataSQL(requestSQL); // Exécute la commande DROP
-      console.log("Table supprimée !");
   } catch (error) {
       console.error("Erreur lors de la suppression de la table :", error);
   }
@@ -143,7 +140,6 @@ export const deleteTable = async (nameTable:string) => {
 export const addTimestampColumn = async () => {
   const alterSQL = `ALTER TABLE historique ADD COLUMN timestamp DATETIME DEFAULT CURRENT_TIMESTAMP;`;
   await affectDataSQL(alterSQL);
-  console.log("Colonne timestamp ajoutée");
 }
 
 //Testing Insertion

@@ -1,6 +1,7 @@
 import HistoryElement from "@/components/HistoryElement";
 import PopUp from "@/components/PopUp";
 import { affectDataSQL, selectDataSQL } from "@/utilitaire/sqlOps";
+import { tableName } from "@/utilitaire/sqlConst";
 import { useEffect, useState } from "react";
 import {
   FlatList,
@@ -10,11 +11,16 @@ import {
   TouchableHighlight,
   View,
 } from "react-native";
+import SearchBar from "@/components/SearchBar";
 
 
 // This screen is used to manage stock data, allowing users to view, delete, and modify stock items
 
+
 const StockScreen = () => {
+  
+  
+  const [query, setQuery] = useState('');
   // State to hold the visibility of the modal
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   // State to hold the data fetched from the database
@@ -55,13 +61,12 @@ const StockScreen = () => {
   // It also resets the stack after deletion
   const deleteData = async () => {
     if (!itemStack || itemStack.length === 0) {
-      const requestSQL = "DELETE FROM historique";
+      const requestSQL = `DELETE FROM ${tableName}`;
       await affectDataSQL(requestSQL);
-      console.log("Suppression de la table");
     } else {
       for (const item of mapElement) {
         if (itemStack.includes(item.id)) {
-          const requestSQL = `DELETE FROM historique WHERE Lot = '${item.Lot}' AND Reference = '${item.Reference}' AND Designation = '${item.Designation}';`;
+          const requestSQL = `DELETE FROM ${tableName} WHERE Lot = '${item.Lot}' AND Reference = '${item.Reference}' AND Designation = '${item.Designation}';`;
           await affectDataSQL(requestSQL);
         }
       }
@@ -75,11 +80,22 @@ const StockScreen = () => {
    setIsModalVisible((prev) => !prev);
   };
 
+  const filteredData = mapElement?.filter((item: any) => {
+    const lowerQuery = query.toLowerCase();
+    return (
+      item.Designation?.toLowerCase().includes(lowerQuery) ||
+      item.Reference?.toLowerCase().includes(lowerQuery) ||
+      item.Lot?.toLowerCase().includes(lowerQuery)
+    );
+  }) || [];
+
   return (
     <View style={styles.container_stock}>
+        <SearchBar query={query} onChangeQuery={setQuery} />
+
         <FlatList
           contentContainerStyle={{ alignItems: "center", marginBottom:12, marginTop: 12 }}
-          data={mapElement || []}
+          data={filteredData}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <TouchableHighlight
@@ -94,6 +110,7 @@ const StockScreen = () => {
             </TouchableHighlight>
           )}
         />
+       
       <>
         <PopUp
           setIsModalVisible={setIsModalVisible}

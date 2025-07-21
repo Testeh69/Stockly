@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         padding: 15,
         width: "100%",
-        backgroundColor: "#2C2C2E",
+        backgroundColor: "#f9f9f9",
         borderRadius: 10,
         minHeight: 100,
         shadowColor: "#000",
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 12,
         fontWeight: "bold",
-        color: "#FFFFFF",
+        color: "#181818ff",
         marginBottom: 5,
     },
     input: {
@@ -95,16 +95,16 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         padding: 10,
         width: 160,
-        backgroundColor: "#3A3A3C",
-        color: "#FFFFFF",
+        backgroundColor: "#f9f9f9",
+        color: "#292626ff",
     },
     noDataText: {
-        color: "#FFFFFF",
+        color: "#171616ff",
         fontStyle: "italic",
     },
     dataText: {
         marginTop:6,
-        color: "#FFFFFF",
+        color: "#201e1eff",
         fontSize:12,
     },
 });

@@ -11,11 +11,19 @@ import {
   View,
 } from "react-native";
 
+
+// This screen is used to manage stock data, allowing users to view, delete, and modify stock items
+
 const StockScreen = () => {
+  // State to hold the visibility of the modal
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  // State to hold the data fetched from the database
   const [mapElement, setMapElement] = useState<any>(null);
+  // State to hold the stack of selected items
   const [itemStack, setItemStack] = useState<any[]>([]);
 
+  // Fetch data from the database when the component mounts and set an interval to refresh it
+  // This ensures that the data displayed is always up-to-date
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -31,7 +39,8 @@ const StockScreen = () => {
     const intervalId = setInterval(fetchData, 800);
     return () => clearInterval(intervalId);
   }, []);
-
+  // Function to push or remove an item from the stack
+  // If the item is already in the stack, it removes it; otherwise, it adds
   const pushInStackItem = (element: number) => {
     if (itemStack?.includes(element)) {
       setItemStack((prev) =>
@@ -41,7 +50,9 @@ const StockScreen = () => {
       setItemStack([...itemStack, element]);
     }
   };
-
+  // Function to delete data from the database based on the selected items in the stack
+  // If the stack is empty, it deletes all data; otherwise, it deletes only the selected items
+  // It also resets the stack after deletion
   const deleteData = async () => {
     if (!itemStack || itemStack.length === 0) {
       const requestSQL = "DELETE FROM historique";
@@ -58,20 +69,22 @@ const StockScreen = () => {
     }
   };
 
+  // Function to handle the visibility of the modal
+  // It toggles the visibility state of the modal
   const handleModal = () => {
-    isModalVisible ? setIsModalVisible(false) : setIsModalVisible(true);
+   setIsModalVisible((prev) => !prev);
   };
 
   return (
     <View style={styles.container_stock}>
-      <>
         <FlatList
+          contentContainerStyle={{ alignItems: "center", marginBottom:12, marginTop: 12 }}
           data={mapElement || []}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <TouchableHighlight
               activeOpacity={0.6}
-              underlayColor="#111111"
+              underlayColor="#ffffffff"
               onPress={() => pushInStackItem(item.id)}
             >
               <HistoryElement
@@ -81,7 +94,6 @@ const StockScreen = () => {
             </TouchableHighlight>
           )}
         />
-      </>
       <>
         <PopUp
           setIsModalVisible={setIsModalVisible}
@@ -95,7 +107,7 @@ const StockScreen = () => {
             style={[styles.button, styles.deleteButton]}
             onPress={() => deleteData()}
           >
-            <Text style={styles.buttonText}>Delete ALL</Text>
+            <Text style={styles.buttonText}>Tout Effacer</Text>
           </Pressable>
         ) : itemStack?.length === 1 ? (
           <>
@@ -103,7 +115,7 @@ const StockScreen = () => {
               style={[styles.button, styles.deleteButton]}
               onPress={() => deleteData()}
             >
-              <Text style={styles.buttonText}>Delete</Text>
+              <Text style={styles.buttonText}>Effacer</Text>
             </Pressable>
             <Pressable
               style={[styles.button, styles.modifierButton]}
@@ -117,7 +129,7 @@ const StockScreen = () => {
             style={[styles.button, styles.deleteButton]}
             onPress={() => deleteData()}
           >
-            <Text style={styles.buttonText}>Delete {itemStack?.length}</Text>
+            <Text style={styles.buttonText}>Effacer {itemStack?.length}</Text>
           </Pressable>
         )}
       </View>
@@ -130,6 +142,7 @@ const styles = StyleSheet.create({
   container_stock: {
     flex: 1,
     backgroundColor: "#FFFFFF",
+    display: "flex",
     alignItems: "center",
   },
 

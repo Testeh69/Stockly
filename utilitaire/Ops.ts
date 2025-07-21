@@ -1,4 +1,5 @@
-
+// file utilitaire that holds utility functions for the application
+// This file contains various utility functions used throughout the application
 
 
 export const sumListDictionnaire = (object:Record<string,number>[]) => {

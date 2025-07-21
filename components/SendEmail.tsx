@@ -10,7 +10,12 @@ import * as XLSX from "xlsx";
 import { databaseName } from "@/utilitaire/sqlConst";
 
 
+// This component is used to send stock data via email
+// It creates an Excel file from the stock data and shares it via email
+
 export default function SendEmail() {
+  // Function to send the stock data via email
+  // It creates an Excel file from the stock data and shares it via email
   const sendData = async () => {
     try {
       const currentDate: string = getCurrentDate();
@@ -18,7 +23,10 @@ export default function SendEmail() {
       const getDataSql: Stock[] = await db.getAllAsync(
         "SELECT Designation, Lot, Quantite FROM historique"
       );
-      console.log(getDataSql);
+      if (getDataSql.length === 0) {
+        Alert.alert("Aucun stock à envoyer");
+        return;
+      }
 
       const enhancedData = getDataSql.map((row) => ({
         Référence: "",
@@ -75,6 +83,8 @@ export default function SendEmail() {
     }
   };
 
+  // Function to confirm sending the stock data via email
+  // It shows an alert to confirm the action before proceeding with sending the data
   const confirmSendData = () => {
     Alert.alert(
       `Confirmation d'envoie de données le: ${getCurrentDate()}`,

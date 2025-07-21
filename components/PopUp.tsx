@@ -11,6 +11,9 @@ import {
   View,
 } from "react-native";
 
+
+// This component is used to display a modal popup for modifying stock quantities
+
 const PopUp = ({ setIsModalVisible, isModalVisible, id }: PopUpProps) => {
   const [quantiteInitial, setQuantiteInitial] = useState<any>();
   const [newQuantite, setNewQuantite] = useState<string>();

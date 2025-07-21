@@ -3,14 +3,19 @@ import SendEmail from "@/components/SendEmail";
 import CarouselHistorique from "@/components/CarouselHistorique";
 import InitDB from "@/components/InitDB";
 
-
+// This is the main index file for the app, which serves as the entry point for the application
+// It initializes the database and renders the main components of the app
 
 
 export default function Index() {
+
+  
+  
   return (
     <View style={styles.container}>
+      
       <InitDB>
-        <View>
+        <View style = {{display: "flex", alignItems: "center", justifyContent:"flex-end"}}>
           <CarouselHistorique />
           <SendEmail />
         </View>

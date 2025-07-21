@@ -2,9 +2,15 @@ import * as SQLite from 'expo-sqlite';
 import { databaseName, tableName } from './sqlConst';
 //Object => Hashmap
 
+
+//file utilitaire that holds SQL operations
+// This file contains functions to interact with the SQLite database
+
+
+// This function checks if the database exists
 export async function checkDatabaseExists(databaseName: string) {
   try {
-    const db = await SQLite.openDatabaseAsync(databaseName);
+    await SQLite.openDatabaseAsync(databaseName);
     console.log('La base de données existe.');
     return true;
   } catch (error) {
@@ -13,6 +19,7 @@ export async function checkDatabaseExists(databaseName: string) {
   }
 }
 
+// This function creates a table in the SQLite database
 
 export const createTable = async ({databaseName, tableName, dataFormat}:{databaseName:string, tableName:string, dataFormat: Record<string,string>}) => {
     try{
@@ -36,7 +43,7 @@ export const createTable = async ({databaseName, tableName, dataFormat}:{databas
 }
 
 
-
+// This function inserts data into the SQLite database
 export const insertData = async({databaseName, tableName, dataToInsert}: { databaseName:string, tableName: string, dataToInsert: Record<string,string|number>}) => {
     try{
         const db = await SQLite.openDatabaseAsync(databaseName, {useNewConnection:true});
@@ -60,7 +67,7 @@ export const insertData = async({databaseName, tableName, dataToInsert}: { datab
 
 }
 
-
+// This function selects data from the SQLite database
 export const selectDataSQL = async (requestSQL:string)=>{
   try {
     const db = await SQLite.openDatabaseAsync(databaseName, {useNewConnection:true});
@@ -73,6 +80,8 @@ export const selectDataSQL = async (requestSQL:string)=>{
   }
 }
 
+// This function affects data in the SQLite database (insert, update, delete)
+// It executes a SQL command and returns the result
 export const affectDataSQL = async (requestSQL:string)=>{
   try {
     const db = await SQLite.openDatabaseAsync(databaseName, {useNewConnection:true});
@@ -88,7 +97,7 @@ export const affectDataSQL = async (requestSQL:string)=>{
 
 
 
-
+// This function selects distinct data from the SQLite database
 export const selectDistinctData = async ({ databaseName, tableName, dataToSelect }:{databaseName:string, tableName:string, dataToSelect:string}) => {
   try {
     const db = await SQLite.openDatabaseAsync(databaseName, {useNewConnection:true});
@@ -102,7 +111,7 @@ export const selectDistinctData = async ({ databaseName, tableName, dataToSelect
   }
 };
 
-
+// This function selects data with a condition from the SQLite database
 export const selectWithCondition = async({databaseName,tableName, dataToSelect}:{databaseName:string,tableName:string, dataToSelect:string})=>{
   try{
     const db = await SQLite.openDatabaseAsync(databaseName, {useNewConnection:true});
@@ -119,7 +128,7 @@ export const selectWithCondition = async({databaseName,tableName, dataToSelect}:
 
 }
 
-
+// This function deletes a table from the SQLite database
 export const deleteTable = async (nameTable:string) => {
   try {
       const requestSQL = `DROP TABLE IF EXISTS '${nameTable}';`;
@@ -130,7 +139,7 @@ export const deleteTable = async (nameTable:string) => {
   }
 };
 
-
+// This function adds a timestamp column to the historique table
 export const addTimestampColumn = async () => {
   const alterSQL = `ALTER TABLE historique ADD COLUMN timestamp DATETIME DEFAULT CURRENT_TIMESTAMP;`;
   await affectDataSQL(alterSQL);

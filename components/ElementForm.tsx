@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 
-export default function ElementForm({ data, modifierQuantites, quantites }: { data: Record<string, string | number> | null, modifierQuantites: (data: number | null) => void, quantites: number|null }) {
-    const [quantite, setQuantite] = useState<string | null>(null);
+// This component is used to display and manage stock data in a form
+// It allows users to view stock information and input quantities for stock items
 
+
+export default function ElementForm({ data, modifierQuantites, quantites }: { data: Record<string, string | number> | null, modifierQuantites: (data: number | null) => void, quantites: number|null }) {
+    // State to hold the quantity input value
+    // This state is used to manage the quantity input field in the form
+    // It allows the user to enter a quantity for the stock item
+    const [quantite, setQuantite] = useState<string | null>(null);
+    // Function to handle changes in the quantity input field
     const handleQuantiteChange = (text: string) => {
         setQuantite((prev) => {
             const numericValue = text ? parseInt(text, 10) : null;
@@ -11,10 +18,12 @@ export default function ElementForm({ data, modifierQuantites, quantites }: { da
             return text;
         });
     };
-
-    useEffect(
-        ()=>setQuantite(quantites === null ? null: quantite)
-        ,[quantites]);
+    // Update the quantite state when quantites prop changes
+    useEffect(() => {
+    if (quantites === null && quantite !== null) {
+        setQuantite(null);
+    }
+    }, [quantites]);
 
         
     return (

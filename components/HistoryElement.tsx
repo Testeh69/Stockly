@@ -1,6 +1,7 @@
 import { Text,  View, StyleSheet } from "react-native";
 
-
+// This component is used to display a history element in the stock screen
+// It shows the designation, reference, lot, and total quantity of the stock item
 
 
 export default function HistoryElement ({data, selected}:{data:any, selected:boolean}) {
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         marginTop: 20,
-        padding: 15,
+        padding: 20,
         width: "95%",
         backgroundColor: "#E67E22",
         borderRadius: 10,
@@ -46,7 +47,8 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         marginTop: 20,
-        padding: 15,
+        marginBottom: 10,
+        padding: 20,
         width: "95%",
         backgroundColor: "#FDFDFD",
         borderRadius: 10,

@@ -4,7 +4,7 @@ import { useEffect,useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 
 
-
+// This component is used to scan QR codes and parse the data from them
 
 
 
@@ -13,7 +13,7 @@ export default function CameraQR  ({dataFromQrCode}:{dataFromQrCode: (data:Recor
     const isFocused = useIsFocused();
     const [permission, requestPermission] = useState<boolean | null>(null);
     const [cameraKey, setCameraKey] = useState<number>(0);
-
+    // Request camera permissions when the component mounts
     useEffect(()=>{
         (async () => {
             const {status} = await Camera.requestCameraPermissionsAsync();
@@ -27,6 +27,7 @@ export default function CameraQR  ({dataFromQrCode}:{dataFromQrCode: (data:Recor
         }
     }, [isFocused])
 
+    // Function to parse the data from the QR code
     const parsingDataFromQrCode = ({data}:{data:string}):Record<string,string> => {
         const resultDataFromParsing: string[] = data.split(",");
         const lengthDataFromParsing: number = resultDataFromParsing.length;
@@ -36,10 +37,10 @@ export default function CameraQR  ({dataFromQrCode}:{dataFromQrCode: (data:Recor
             const value : string = resultDataFromParsing[i].split(":")[1].trim().replace("\"","");;
             parsingData[keyWords] = value; 
         }
-        console.log(parsingData)
+        console.log("parsing - data", parsingData)
         return parsingData;
     }
-    
+    // Function to handle the data from the QR code
     const getDataFromQrCode = ({type,data}: {type:string, data:string}) => {
         if (typeof data === 'string'){
             dataFromQrCode(parsingDataFromQrCode({data}));
@@ -76,20 +77,20 @@ export default function CameraQR  ({dataFromQrCode}:{dataFromQrCode: (data:Recor
 const styles = StyleSheet.create({
     container: {
         width:'100%',
-        height:300, // Makes the container take up available space
-        alignItems: 'center', // Centers the camera view horizontally
+        height:300,
+        alignItems: 'center',
     },
     cameraView: {
-        flex: 1, // Takes up available space within the container
-        width: '90%', // Ensures the camera view adapts to different screen sizes
-        maxWidth: 400, // Adds a max width so it doesn't stretch too far on large screens
-        aspectRatio: 1, // Ensures the camera view stays square
-        borderRadius: 10, // Softens the edges of the camera view
-        overflow: 'hidden', // Prevents the camera from overflowing its container
-        shadowColor: "#000", // Adds a shadow effect
+        flex: 1, 
+        width: '90%', 
+        maxWidth: 400, 
+        aspectRatio: 1, 
+        borderRadius: 10, 
+        overflow: 'hidden', 
+        shadowColor: "#000",
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.2,
-        shadowRadius: 5, // Gives a soft shadow around the camera view
-        elevation: 6, // Adds elevation to Android for the shadow effect
+        shadowRadius: 5, 
+        elevation: 6, 
     },
 });

@@ -1,4 +1,5 @@
-
+// file utilitaire that holds SQL constants and database configuration
+// This file defines the database name, table name, and the structure of the table
 
 
 export const databaseName: string = "stock";

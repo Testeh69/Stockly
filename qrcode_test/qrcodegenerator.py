@@ -1,6 +1,9 @@
 import qrcode
 import json
 
+# Fait avec IA car grande flemme de le faire moi-même
+
+
 
 # Données à encoder
 data = "Lot:12345 ,Designation:Produit X , Reference:ABC123"

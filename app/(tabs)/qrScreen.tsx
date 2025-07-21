@@ -2,30 +2,31 @@ import CameraQR from "@/components/CameraElement";
 import CarouselHistorique from "@/components/CarouselHistorique";
 import ElementForm from "@/components/ElementForm";
 import { getTimeStamp } from "@/utilitaire/miscellanous";
-import { databaseMap, databaseName, tableName } from "@/utilitaire/sqlConst";
+import { databaseName, tableName } from "@/utilitaire/sqlConst";
 import {
   affectDataSQL,
-  createTable,
   insertData,
   selectDataSQL,
 } from "@/utilitaire/sqlOps";
 import React, { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+
+
+// This screen is used to scan QR codes and parse the data from them
+
 export default function QrScreen() {
+  // State to hold the parsed data from the QR code
   const [parsingData, setParsingData] = useState<Record<
     string,
     string | number
   > | null>(null);
+  // State to hold the quantity of stock
   const [quantiteStock, setQuantiteStock] = useState<number | null>(null);
 
+  // Function to save the data to the database
   const savedData = async () => {
     try {
-      await createTable({
-        databaseName,
-        tableName,
-        dataFormat: databaseMap,
-      });
       if (parsingData !== null) {
         const requestSQL = `SELECT COALESCE(Quantite, 0) AS Quantite
                 FROM historique 
@@ -67,7 +68,7 @@ export default function QrScreen() {
     setParsingData(null);
     setQuantiteStock(null);
   };
-
+  // Function to delete the data from the state
   const deleteData = () => {
     setParsingData(null);
     setQuantiteStock(null);

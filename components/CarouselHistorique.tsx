@@ -11,6 +11,8 @@ type HistoriqueItem = {
   timestamp: string;
 };
 
+// This component displays a carousel of historical data from the database
+
 export default function CarouselHistorique() {
   const [carouselData, setCarouselData] = useState<HistoriqueItem[]>([]);
 
@@ -64,7 +66,8 @@ export default function CarouselHistorique() {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 20,
+    marginVertical: 10,
+    paddingHorizontal: 10,
   },
   noData: {
     textAlign: "center",
@@ -81,6 +84,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 20,
+    marginVertical: 10,
     marginHorizontal: 10,
     width: 250,
     shadowColor: "#000",

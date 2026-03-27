@@ -18,22 +18,25 @@ Après la compilation de l’app, l’accès au documentDirectory est restreint,
 - Correction de l'envoi par mail 
 - Rendre l'ui plus agréable
 - Monter le menu pour éviter la colision avec le menu natif du téléphone
-
-
-### 🔄 En test
-- Rendre plus robuste la lecture du QrCode
+- Supprime avec Delete All -drop la table ? 
+- Soigner l'architecture du logiciel
 - Ajout d’une barre de recherche
 
 
 
+### 🔄 En test
+- Modifié les colonnes d'envoie du fichier Excel (Validité : Validé, Unité référence : Unités ou kilogrammes)
+
+
+
+
 ### 🛠️ En cours
+- Message SQLITE dès la création d'un nouvel objet
 
 
 ### 📌 À faire
 
-
-Supprime avec Delete All -drop la table ? 
-Soigner l'architecture du logiciel
-Ajout d’une barre de recherche
-
-
+- Etiquettes trop longues débordent sur les cases (standardiser la taille des cards)
+- Prendre en charge les accents circonflexes lors de la lecture du qr code
+- Partie Inventaire Logo - tirage par Alphabétisation OF, Référence , Désignation, Date
+- Obligation de quitter l'app puis de revenir pour lançer l'email.

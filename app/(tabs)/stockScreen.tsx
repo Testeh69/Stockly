@@ -1,7 +1,11 @@
 import HistoryElement from "@/components/HistoryElement";
 import PopUp from "@/components/PopUp";
-import { affectDataSQL, selectDataSQL } from "@/utilitaire/sqlOps";
-import { tableName } from "@/utilitaire/sqlConst";
+import SearchBar from "@/components/SearchBar";
+import { tableName } from "@/utilitaire/dataLayer/sql/sqlConst";
+import {
+  affectDataSQL,
+  selectDataSQL,
+} from "@/utilitaire/dataLayer/sql/sqlOps";
 import { useEffect, useState } from "react";
 import {
   FlatList,
@@ -11,16 +15,11 @@ import {
   TouchableHighlight,
   View,
 } from "react-native";
-import SearchBar from "@/components/SearchBar";
-
 
 // This screen is used to manage stock data, allowing users to view, delete, and modify stock items
 
-
 const StockScreen = () => {
-  
-  
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   // State to hold the visibility of the modal
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   // State to hold the data fetched from the database
@@ -50,7 +49,7 @@ const StockScreen = () => {
   const pushInStackItem = (element: number) => {
     if (itemStack?.includes(element)) {
       setItemStack((prev) =>
-        prev ? prev.filter((item) => item !== element) : []
+        prev ? prev.filter((item) => item !== element) : [],
       );
     } else {
       setItemStack([...itemStack, element]);
@@ -77,40 +76,45 @@ const StockScreen = () => {
   // Function to handle the visibility of the modal
   // It toggles the visibility state of the modal
   const handleModal = () => {
-   setIsModalVisible((prev) => !prev);
+    setIsModalVisible((prev) => !prev);
   };
 
-  const filteredData = mapElement?.filter((item: any) => {
-    const lowerQuery = query.toLowerCase();
-    return (
-      item.Designation?.toLowerCase().includes(lowerQuery) ||
-      item.Reference?.toLowerCase().includes(lowerQuery) ||
-      item.Lot?.toLowerCase().includes(lowerQuery)
-    );
-  }) || [];
+  const filteredData =
+    mapElement?.filter((item: any) => {
+      const lowerQuery = query.toLowerCase();
+      return (
+        item.Designation?.toLowerCase().includes(lowerQuery) ||
+        item.Reference?.toLowerCase().includes(lowerQuery) ||
+        item.Lot?.toLowerCase().includes(lowerQuery)
+      );
+    }) || [];
 
   return (
     <View style={styles.container_stock}>
-        <SearchBar query={query} onChangeQuery={setQuery} />
+      <SearchBar query={query} onChangeQuery={setQuery} />
 
-        <FlatList
-          contentContainerStyle={{ alignItems: "center", marginBottom:12, marginTop: 12 }}
-          data={filteredData}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <TouchableHighlight
-              activeOpacity={0.6}
-              underlayColor="#ffffffff"
-              onPress={() => pushInStackItem(item.id)}
-            >
-              <HistoryElement
-                data={item}
-                selected={itemStack?.includes(item.id) ? true : false}
-              />
-            </TouchableHighlight>
-          )}
-        />
-       
+      <FlatList
+        contentContainerStyle={{
+          alignItems: "center",
+          marginBottom: 12,
+          marginTop: 12,
+        }}
+        data={filteredData}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <TouchableHighlight
+            activeOpacity={0.6}
+            underlayColor="#ffffffff"
+            onPress={() => pushInStackItem(item.id)}
+          >
+            <HistoryElement
+              data={item}
+              selected={itemStack?.includes(item.id) ? true : false}
+            />
+          </TouchableHighlight>
+        )}
+      />
+
       <>
         <PopUp
           setIsModalVisible={setIsModalVisible}

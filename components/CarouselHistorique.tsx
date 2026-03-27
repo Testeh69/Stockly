@@ -1,15 +1,7 @@
-import { selectDataSQL } from "@/utilitaire/sqlOps";
+import { selectDataSQL } from "@/utilitaire/dataLayer/sql/sqlOps";
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-
-type HistoriqueItem = {
-  id: number;
-  Lot: string;
-  Reference: string;
-  Designation: string;
-  Quantite: number;
-  timestamp: string;
-};
+import { HistoriqueItem } from "@/utilitaire/struct/type";
 
 // This component displays a carousel of historical data from the database
 
@@ -21,9 +13,9 @@ export default function CarouselHistorique() {
       const fetchData = async () => {
         try {
           const sqlRequest = `SELECT * FROM historique ORDER BY timestamp DESC LIMIT 3`;
-          const result = await selectDataSQL(sqlRequest);
+          const result = await selectDataSQL<HistoriqueItem>(sqlRequest);
           if (Array.isArray(result)) {
-            setCarouselData(result as HistoriqueItem[]);
+            setCarouselData(result);
           } else {
             console.error("selectDataSQL returned unexpected value", result);
           }

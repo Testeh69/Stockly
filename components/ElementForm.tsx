@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput, ScrollView } from "react-native";
 
 // This component is used to display and manage stock data in a form
 // It allows users to view stock information and input quantities for stock items
@@ -32,7 +32,16 @@ export default function ElementForm({ data, modifierQuantites, quantites }: { da
                 {data === null ? (
                     <Text style={styles.noDataText}>Aucune Information</Text>
                 ) : (Object.entries(data).map(([key, value]) => (
-                    <Text key={key} style={styles.dataText}>{`${key} : ${value}`}</Text>
+                    <ScrollView
+                    key={key}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={{ maxWidth: 148 }}
+                >
+                    <Text style={styles.dataText}>
+                        {`${key} : ${value}`}
+                    </Text>
+                </ScrollView>
                 ))
         
                 )}
@@ -106,5 +115,6 @@ const styles = StyleSheet.create({
         marginTop:6,
         color: "#201e1eff",
         fontSize:12,
+    
     },
 });

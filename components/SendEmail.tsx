@@ -1,14 +1,10 @@
-import { Stock } from "@/utilitaire/interface";
 import { getCurrentDate } from "@/utilitaire/Ops";
+import { Stock } from "@/utilitaire/struct/interface";
 import { Ionicons } from "@expo/vector-icons";
-import * as FileSystem from "expo-file-system";
-import * as Sharing from "expo-sharing";
-import * as SQLite from "expo-sqlite";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import {utils} from "xlsx";
-import * as XLSX from "xlsx";
-import { databaseName } from "@/utilitaire/sqlConst";
-
+import { getStockData } from "@/utilitaire/dataLayer/stockQueries";
+import { generateExcel } from "@/utilitaire/export.ts/excel";
+import { exportExcel } from "@/utilitaire/export.ts/export";
 
 // This component is used to send stock data via email
 // It creates an Excel file from the stock data and shares it via email
@@ -17,69 +13,12 @@ export default function SendEmail() {
   // Function to send the stock data via email
   // It creates an Excel file from the stock data and shares it via email
   const sendData = async () => {
-    try {
-      const currentDate: string = getCurrentDate();
-      const db = await SQLite.openDatabaseAsync(databaseName);
-      const getDataSql: Stock[] = await db.getAllAsync(
-        "SELECT Designation, Lot, Quantite FROM historique"
-      );
-      if (getDataSql.length === 0) {
-        Alert.alert("Aucun stock à envoyer");
-        return;
+    const stockData: Stock[] | null = await getStockData();
+    if (stockData !== null && stockData.length > 0) {
+      const excelFile64 = generateExcel(stockData);
+      if (excelFile64 !== null) {
+         await exportExcel(excelFile64);
       }
-
-      const enhancedData = getDataSql.map((row) => ({
-        Référence: "",
-        Designation: row.Designation,
-        Etablissement: "AXYLLUS TECHNOLOGIES SARL",
-        "Zone de stock": "",
-        Emplacement: "",
-        Lot: row.Lot,
-        Série: "",
-        Tiers: "",
-        Affaire: "",
-        "Statut Qualité": "",
-        Unité: "",
-        Qté: "",
-        Coefficient: "",
-        "Qté comptée": row.Quantite,
-        Validité: "",
-        Ecart: "",
-        "Unité référence": "",
-        "Qté référence": "",
-        "Qté réservée": "",
-        "Unité stock": "",
-        "Qté stock": "",
-        "Coefficient stock": "",
-        "Cout unitaire": "",
-        "Cout total": "",
-        "Cout compté": "",
-        "Ecart montant": "",
-        "Devise cout": "EUR",
-        "Barre Longueur": "",
-      }));
-
-      const worksheet = utils.json_to_sheet(enhancedData);
-      const workbook = utils.book_new();
-      utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      const base64xl = XLSX.write(workbook, {
-        type: "base64",
-        bookType: "xlsx",
-      });
-   
-      const fileUri: string =
-        FileSystem.cacheDirectory + currentDate + `_stock.xlsx`;
-      await FileSystem.writeAsStringAsync(fileUri, base64xl, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-      await Sharing.shareAsync(fileUri);
-      Alert.alert("Succès", `Fichier créé et partagé avec succès : ${fileUri}`);
-    } catch (error) {
-      console.error(
-        "Erreur lors de la création ou du partage du fichier :",
-        error
-      );
-      Alert.alert("Erreur", "Impossible de créer ou partager le fichier.");
     }
   };
 
@@ -93,7 +32,7 @@ export default function SendEmail() {
         { text: "Annuler", style: "cancel" },
         { text: "Confirmer", onPress: sendData },
       ],
-      { cancelable: false }
+      { cancelable: false },
     );
   };
 

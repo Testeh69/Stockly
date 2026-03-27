@@ -6,34 +6,43 @@ import { Text,  View, StyleSheet } from "react-native";
 
 export default function HistoryElement ({data, selected}:{data:any, selected:boolean}) {
 
-
     return (
-        <View style = {selected? styles.selected : styles.container__input}>
-            <View>
-                <Text>Designation: {data.Designation}</Text>
-                <Text>Reference: {data.Reference}</Text>
-                <Text>Lot:{data.Lot}</Text>
+        <View style={selected ? styles.selected : styles.container}>
+            
+            <View style={styles.left}>
+                <Text style={styles.text}> {data.Designation}</Text>
+                <Text style={styles.text}> {data.Reference}</Text>
+                <Text style={styles.text}> {data.Lot}</Text>
             </View>
-            <View>
-                <Text>Quantite:{data.QuantiteTotal}</Text>
+
+            <View style={styles.right}>
+                <Text style={styles.text}>Quantite: {data.QuantiteTotal}</Text>
             </View>
+
         </View>
     )
 }
 
 const styles = StyleSheet.create({
 
-    selected:{
-        display: "flex",
+    container: {
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems: "center",
+        alignItems: "flex-start",
         marginTop: 20,
+        marginBottom: 10,
         padding: 20,
-        width: "95%",
-        backgroundColor: "#E67E22",
+        width: "85%",
+        backgroundColor: "#FDFDFD",
         borderRadius: 10,
         minHeight: 100,
+
+        // ❌ supprimé
+        maxHeight: 300,
+        minWidth: 350,
+        maxWidth: 350,
+        // minWidth / maxWidth fixes
+
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
@@ -41,22 +50,36 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
 
-    container__input: {
-        display: "flex",
+    selected: {
+        backgroundColor: "#E67E22",
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems: "center",
+        alignItems: "flex-start",
         marginTop: 20,
-        marginBottom: 10,
         padding: 20,
-        width: "95%",
-        backgroundColor: "#FDFDFD",
+        width: "85%",
         borderRadius: 10,
         minHeight: 100,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-        elevation: 5,
+        maxHeight: 300,
+        minWidth: 350,
+        maxWidth: 350,
+    },
+
+    left: {
+        flex: 1,
+        marginRight: 10,
+        flexShrink: 1,
+    },
+
+    right: {
+        width: 90,
+        flexShrink: 0,
+        alignItems: "flex-end",
+    },
+
+    text: {
+        fontSize: 14,
+        marginBottom: 4,
+        flexWrap: "wrap",
     }
-})
+});

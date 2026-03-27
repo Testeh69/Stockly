@@ -15,3 +15,15 @@ export function getTimeStamp() {
   const horaire = parisTime.toFormat('yyyy-LL-dd HH:mm:ss') 
   return horaire;
 }
+
+
+
+export const getUniteReference = (lot: any) => {
+  const val = (lot || "").toLowerCase();
+
+  const contientCC = val.includes("cc");
+  const seulementChiffresEtCC = /^cc[0-9\s]*$/.test(val);
+
+
+  return seulementChiffresEtCC && contientCC ? "Kilogramme" : "Unité";
+};

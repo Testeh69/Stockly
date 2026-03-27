@@ -1,6 +1,6 @@
 import { isString } from "@/utilitaire/miscellanous";
-import { affectDataSQL, selectDataSQL } from "@/utilitaire/sqlOps";
-import { PopUpProps } from "@/utilitaire/type";
+import { affectDataSQL, selectDataSQL } from "@/utilitaire/dataLayer/sql/sqlOps";
+import { PopUpProps } from "@/utilitaire/struct/type";
 import React, { useEffect, useState } from "react";
 import {
   Modal,

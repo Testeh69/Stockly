@@ -1,17 +1,15 @@
 import CameraQR from "@/components/CameraElement";
 import CarouselHistorique from "@/components/CarouselHistorique";
 import ElementForm from "@/components/ElementForm";
-import { getTimeStamp } from "@/utilitaire/miscellanous";
-import { databaseName, tableName } from "@/utilitaire/sqlConst";
+import { databaseName, tableName } from "@/utilitaire/dataLayer/sql/sqlConst";
 import {
   affectDataSQL,
   insertData,
   selectDataSQL,
-} from "@/utilitaire/sqlOps";
+} from "@/utilitaire/dataLayer/sql/sqlOps";
+import { getTimeStamp } from "@/utilitaire/miscellanous";
 import React, { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-
-
 
 // This screen is used to scan QR codes and parse the data from them
 
@@ -66,6 +64,7 @@ export default function QrScreen() {
     setParsingData(null);
     setQuantiteStock(null);
   };
+
   const deleteData = () => {
     setParsingData(null);
     setQuantiteStock(null);
@@ -73,7 +72,7 @@ export default function QrScreen() {
 
   return (
     <View style={styles.container}>
-              <CameraQR dataFromQrCode={setParsingData} />
+      <CameraQR dataFromQrCode={setParsingData} />
       <View>
         <CarouselHistorique />
       </View>

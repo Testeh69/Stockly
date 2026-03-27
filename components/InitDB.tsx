@@ -1,10 +1,13 @@
+import {
+  databaseMap,
+  databaseName,
+  tableName,
+} from "@/utilitaire/dataLayer/sql/sqlConst";
+import { createTable } from "@/utilitaire/dataLayer/sql/sqlOps";
 import { useEffect, useState } from "react";
-import { Modal, View, Text, ActivityIndicator, StyleSheet } from "react-native";
-import { databaseMap, databaseName, tableName } from "@/utilitaire/sqlConst";
-import { createTable } from "@/utilitaire/sqlOps";
+import { ActivityIndicator, Modal, StyleSheet, Text, View } from "react-native";
 
-
-// This component initializes the database and creates the necessary table if it doesn't exist  
+// This component initializes the database and creates the necessary table if it doesn't exist
 
 export default function InitDB({ children }: { children: React.ReactNode }) {
   const [isReady, setIsReady] = useState(false);
@@ -28,7 +31,9 @@ export default function InitDB({ children }: { children: React.ReactNode }) {
           <View style={styles.modalBackground}>
             <View style={styles.popup}>
               <ActivityIndicator size="large" color="#2196F3" />
-              <Text style={styles.text}>Vérification de l&apos existence de la base de données...</Text>
+              <Text style={styles.text}>
+                Vérification de l&apos existence de la base de données...
+              </Text>
             </View>
           </View>
         </Modal>

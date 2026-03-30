@@ -30,15 +30,13 @@ export const createTable = async ({
   dataFormat: Record<string, string>;
 }) => {
   try {
-    const db = await SQLite.openDatabaseAsync(databaseName, {
-      useNewConnection: true,
-    });
+    const db = await SQLite.openDatabaseAsync(databaseName);
     const columns = Object.entries(dataFormat)
       .map(([key, value]) => `${key} ${value}`)
       .join(", ");
     const query = `PRAGMA journal_mode = WAL; CREATE TABLE IF NOT EXISTS "${tableName}" (id INTEGER PRIMARY KEY AUTOINCREMENT, ${columns});`;
     await db.execAsync(query);
-    await db.closeAsync();
+
     return true;
   } catch (error) {
     if (error instanceof Error) {
@@ -60,9 +58,7 @@ export const insertData = async ({
   dataToInsert: Record<string, string | number>;
 }) => {
   try {
-    const db = await SQLite.openDatabaseAsync(databaseName, {
-      useNewConnection: true,
-    });
+    const db = await SQLite.openDatabaseAsync(databaseName,{useNewConnection:true});
     const columns = Object.keys(dataToInsert)
       .map((col) => `"${col}"`)
       .join(", ");
@@ -76,7 +72,6 @@ export const insertData = async ({
     const query = `INSERT INTO "${tableName}" (${columns}) VALUES (${placeHolders});`;
     await db.runAsync(query, values);
     await verifyInsertion();
-    await db.closeAsync();
     return true;
   } catch (error) {
     if (error instanceof Error) {
@@ -90,9 +85,8 @@ export const insertData = async ({
 // This function selects data from the SQLite database
 export const selectDataSQL = async <T extends (Stock | HistoriqueItem)> (requestSQL: string) : Promise<T[]|null> => {
   try {
-    const db = await SQLite.openDatabaseAsync(databaseName, {
-      useNewConnection: true,
-    });
+
+    const db = await SQLite.openDatabaseAsync(databaseName, { useNewConnection: true });
     const result = await db.getAllAsync <T>(requestSQL);
     return result;
   } catch (error: any) {
@@ -106,9 +100,7 @@ export const selectDataSQL = async <T extends (Stock | HistoriqueItem)> (request
 // It executes a SQL command and returns the result
 export const affectDataSQL = async (requestSQL: string) => {
   try {
-    const db = await SQLite.openDatabaseAsync(databaseName, {
-      useNewConnection: true,
-    });
+    const db = await SQLite.openDatabaseAsync(databaseName, { useNewConnection: true });
     const result = await db.runAsync(requestSQL);
     return result;
   } catch (error: any) {
@@ -129,9 +121,7 @@ export const selectDistinctData = async ({
   dataToSelect: string;
 }) => {
   try {
-    const db = await SQLite.openDatabaseAsync(databaseName, {
-      useNewConnection: true,
-    });
+    const db = await SQLite.openDatabaseAsync(databaseName);
     const query = `SELECT DISTINCT ${dataToSelect} FROM ${tableName};`;
     const result = await db.getAllAsync(query);
     return result[0];
@@ -153,9 +143,7 @@ export const selectWithCondition = async ({
   dataToSelect: string;
 }) => {
   try {
-    const db = await SQLite.openDatabaseAsync(databaseName, {
-      useNewConnection: true,
-    });
+    const db = await SQLite.openDatabaseAsync(databaseName);
     const query = `SELECT ${dataToSelect} FROM ${tableName} WHERE "Designation" = "AZZRZDE" AND "Reference" = "AZADCZEF" AND "Lot" = "AZ22342";`;
     const result = await db.getAllAsync(query);
     const jsonResult = JSON.stringify(result);
@@ -189,3 +177,6 @@ const verifyInsertion = async () => {
   const results = await db.getAllAsync(`SELECT * FROM "${tableName}";`);
   console.log("Contenu de la table :", results);
 };
+
+
+

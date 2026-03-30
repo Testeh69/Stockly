@@ -99,7 +99,7 @@ const StockScreen = () => {
           marginBottom: 12,
           marginTop: 12,
         }}
-        data={filteredData}
+        data={filteredData.sort((a:any, b:any) => a.Designation.localeCompare(b.Designation))}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <TouchableHighlight

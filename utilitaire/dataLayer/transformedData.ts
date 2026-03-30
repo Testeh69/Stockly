@@ -2,7 +2,7 @@ import { Stock } from "@/utilitaire/struct/interface";
 import { getUniteReference } from "@/utilitaire/miscellanous";
 
 export const getEnhancedData = (data: Stock[]) : Record<string, string | number>[]=> {
-
+// This function takes an array of Stock objects and returns an array of enhanced data objects with additional fields for miscellaneous purposes
               const enhancedData = data.map((row) => ({
                 Référence: row.Reference ?? "",
                 Designation: row.Designation ?? "",

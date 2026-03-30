@@ -105,8 +105,7 @@ export default function CameraQR  ({dataFromQrCode}:{dataFromQrCode: (data:Recor
 
 const styles = StyleSheet.create({
     container: {
-        width:330,
-        height:220,
+        flex: 1,
         alignItems: 'center',
     },
     cameraView: {
